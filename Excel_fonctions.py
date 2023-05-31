@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
-#Import CSV file and copy it into CSV2Table Excel file
+#Import CSV file and copy it into CSV2Table Excel file.
 #Arguments: Log_to_import : This is the number of the log & the name of the CSV file, Please ensure that all the Logs names are numbers
 #----------------------------------------------------------------------------------------------------------------------------------------------
 def Import_CSV(Log_to_import):
