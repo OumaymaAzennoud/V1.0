@@ -3,10 +3,6 @@ from openpyxl.utils import get_column_letter, column_index_from_string
 import pandas as pd
 import os
 
-#wb = load_workbook(
-#   'C:/Users/oumayma.azennoud/OneDrive - Eurofins Digital Testing International/Desktop/Python/Template.xlsx')
-#ws = wb['Test']
-
 #----------------------------------------------------------------------------------------------------------------------------------------------
 #Import CSV file and copy it into CSV2Table Excel file
 #Arguments: Log_to_import : This is the number of the log & the name of the CSV file, Please ensure that all the Logs names are numbers
