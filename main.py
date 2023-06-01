@@ -18,7 +18,7 @@ import os
 # Global Variables
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 #CSV2TABLE-------------------
-Col_time=1,
+Col_time=1
 Col_voltage=2
 Col_current = 3
 Col_power = 4
@@ -48,7 +48,7 @@ Col_Sample=24
 Col_Cable=25
 Col_Comment=26
 #-------------------------------
-Log_number=10
+Log_line_number=16
 IOP_file="Template"
 Table_file="CSV2Table"
 precharge_start=0.05
@@ -66,76 +66,6 @@ ws2 = wb2['Sheet1']
 # ----------------------------------------------------------------------------------------------------------------------------------------------
 
 EF.Import_CSV(14)
-
-Max_current_ph1 = None
-for i in range(2, max_row + 1, 1):
-    if abs(ws2[EF.GetCol(Col_current) + str(i)].value) > precharge_start:
-        EndPh1 = i
-        break
-    # Current calculation
-    current_ph1 = 0 if abs(float(ws2[EF.GetCol(Col_current) + str(i)].value)) == None else abs(float(ws2[EF.GetCol(Col_current) + str(i)].value))
-    current_ph1 *= 1000
-    if Max_current_ph1 is None or current_ph1 > Max_current_ph1: Max_current_ph1 = current_ph1
-#EF.FillCell(12+Log_number,12, Max_ph1, "Charging IOP", Table_file)
-
-Max_current_ph2=None
-Max_power_ph2 = None                                                                 #initialize the variable
-for i in range(EndPh1, max_row + 1, 1):                                              #From the start of the phase (end of last phase) to the last cell with data in the column, the loop will break before that as soon as the next phase is detected
-    if abs(ws2[EF.GetCol(Col_current) + str(i)].value) > precharge_end:              #detect the next phase
-        EndPh2 = i                                                                   #memorise the start row of the next phase
-        break
-    #Current calculation
-    current_ph2 = 0 if abs(float(ws2[EF.GetCol(Col_current) + str(i)].value)) == None else abs(float(ws2[EF.GetCol(Col_current) + str(i)].value)) #to prevent the program to tak a "None" value
-    current_ph2 *= 1000 #convert into mA
-
-    if Max_current_ph2 is None or current_ph2 > Max_current_ph2: Max_current_ph2 = current_ph2               #select the max current value of the phase
-EF.FillCell(12+Log_number,Col_PrechargeCrurrent, Max_current_ph2, "Charging IOP", IOP_file)  #Fill the curret cell in Charging IOP sheet with Max_ph2
-
-Max_current_ph3 = None
-Max_power_ph3 = None
-Max_voltage_ph3 = None
-for i in range(EndPh2, max_row + 1, 1):
-    if abs(ws2[EF.GetCol(Col_current) + str(i)].value) < precharge_start:
-        EndPh3 = i
-        break
-    # Current calculation
-    current_ph3 = 0 if abs(float(ws2[EF.GetCol(Col_current) + str(i)].value)) == None else abs(float(ws2[EF.GetCol(Col_current) + str(i)].value))
-    current_ph3 *= 1000
-    if Max_current_ph3 is None or current_ph3 > Max_current_ph3: Max_current_ph3 = current_ph3
-    # Power calculation
-    power_ph3 = 0 if abs(float(ws2[EF.GetCol(Col_power) + str(i)].value)) == None else abs(float(ws2[EF.GetCol(Col_power) + str(i)].value)) #to prevent the program to tak a "None" value
-    if Max_power_ph3 is None or power_ph3 > Max_power_ph3: Max_power_ph3 = power_ph3
-    # Voltage calculation
-    voltage_ph3 = 0 if abs(float(ws2[EF.GetCol(Col_voltage) + str(i)].value)) == None else abs(float(ws2[EF.GetCol(Col_voltage) + str(i)].value)) #to prevent the program to tak a "None" value
-    if Max_voltage_ph3 is None or voltage_ph3 > Max_voltage_ph3: Max_voltage_ph3 = voltage_ph3
-EF.FillCell(12+Log_number, Col_NormalChargeCurrent, Max_current_ph3, "Charging IOP", IOP_file)
-EF.FillCell(12+Log_number,Col_NormalChargePower, Max_power_ph3, "Charging IOP", IOP_file)  #Fill the power cell in Charging IOP sheet with Max_ph2
-EF.FillCell(12+Log_number,Col_VoltageNormalCharge, Max_voltage_ph3, "Charging IOP", IOP_file)  #Fill the voltage cell in Charging IOP sheet with Max_ph2
+EF.Fill_IOP_row(22)
 
 
-Max_current_ph4 = None
-for i in range(EndPh3, max_row + 1, 1):
-    if abs(ws2[EF.GetCol(Col_current) + str(i)].value) > precharge_end:
-        EndPh4 = i
-        break
-    # Current calculation
-    current_ph4 = 0 if abs(float(ws2[EF.GetCol(Col_current) + str(i)].value)) == None else abs(float(ws2[EF.GetCol(Col_current) + str(i)].value))
-    current_ph4 *= 1000
-    if Max_current_ph4 is None or current_ph4 > Max_current_ph4: Max_current_ph4 = current_ph4
-#EF.FillCell(12+Log_number, 12, Max_ph4, "Charging IOP", IOP_file)
-
-Max_current_ph5 = None
-Max_power_ph5 = None
-for i in range(EndPh4, max_row + 1, 1):
-    if abs(ws2[EF.GetCol(Col_current) + str(i)].value) < precharge_start:
-        EndPh5 = i
-        break
-    # Current calculation
-    current_ph5 = 0 if abs(float(ws2[EF.GetCol(Col_current) + str(i)].value)) == None else abs(float(ws2[EF.GetCol(Col_current) + str(i)].value))
-    current_ph5 *= 1000
-    if Max_current_ph5 is None or current_ph5 > Max_current_ph5: Max_current_ph5 = current_ph5
-    # Power calculation
-    power_ph5 = 0 if abs(float(ws2[EF.GetCol(Col_power) + str(i)].value)) == None else abs(float(ws2[EF.GetCol(Col_power) + str(i)].value)) #to prevent the program to tak a "None" value
-    if Max_power_ph5 is None or power_ph5 > Max_power_ph5: Max_power_ph5 = power_ph5
-EF.FillCell(12+Log_number,Col_CurretAfterFlip, Max_current_ph5, "Charging IOP", IOP_file)
-EF.FillCell(12+Log_number,Col_PowerAfterFlip, Max_power_ph5, "Charging IOP", IOP_file)  #Fill the curret cell in Charging IOP sheet with Max_ph2
