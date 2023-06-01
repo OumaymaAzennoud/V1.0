@@ -66,3 +66,11 @@ def get_max_row_column(df, sheet_name):
 df = pd.read_excel('C:/Users/oumayma.azennoud/OneDrive - Eurofins Digital Testing International/Desktop/Python/CSV2Table.xlsx', sheet_name=None)
 max_row = get_max_row_column(df, 'Sheet1')['max_row']
 max_col = get_max_row_column(df, 'Sheet1')['max_col']
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#Get the colum
+#Arguments: char : enter the column number or the column indicator
+#----------------------------------------------------------------------------------------------------------------------------------------------
+def GetCol(Col) :
+    char = get_column_letter(Col)
+    return char
